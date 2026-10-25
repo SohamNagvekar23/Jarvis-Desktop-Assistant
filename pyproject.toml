@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jarvis"
+version = "0.1.0"
+description = "Windows voice assistant"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "comtypes>=1.4.8",
+    "faster-whisper>=1.1",
+    "mss>=10.0",
+    "numpy>=1.26",
+    # Pinned: jarvis/wakeword.py stubs an internal module of this exact version.
+    "openwakeword==0.6.0",
+    "psutil>=5.9",
+    "pycaw>=20240316",
+    "pyttsx3>=2.98",
+    "pywebview>=6.0",
+    "sounddevice>=0.5",
+    # Unpinned on purpose: yt-dlp needs regular updates when YouTube changes.
+    "yt-dlp",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+jarvis = "jarvis.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+jarvis = ["ui/*.html", "ui/*.css", "ui/*.js", "ui/fonts/*.woff2", "ui/fonts/*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

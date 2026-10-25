@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; font-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'none'">
+  <title>Jarvis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="main">
+<div class="app">
+  <header class="titlebar">
+    <div class="titlebar-drag pywebview-drag-region">
+      <svg class="brand-ring" viewBox="0 0 18 18" aria-hidden="true">
+        <circle cx="9" cy="9" r="7.5" fill="none" stroke="#39D0FF" stroke-width="1.5"/>
+        <circle cx="9" cy="9" r="3" fill="#39D0FF"/>
+      </svg>
+      <span class="brand-name">JARVIS</span>
+      <span class="brand-version">v0.1 · <span class="online">ONLINE</span></span>
+    </div>
+    <div class="window-buttons">
+      <button data-action="minimize" title="Mini mode" aria-label="Minimize to mini mode">
+        <svg viewBox="0 0 10 10"><path d="M0 5.5h10" stroke="currentColor" stroke-width="1"/></svg>
+      </button>
+      <button data-action="maximize" title="Maximize" aria-label="Maximize">
+        <svg viewBox="0 0 10 10"><rect x="0.5" y="0.5" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      </button>
+      <button class="close" data-action="close" title="Close Jarvis" aria-label="Close">
+        <svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="columns">
+    <aside class="col-left">
+      <section class="panel">
+        <div class="panel-title"><span class="label">System</span></div>
+        <div class="meter" data-meter="cpu">
+          <div class="meter-head"><span class="label">CPU</span><span class="meter-value">--</span></div>
+          <div class="meter-track"><div class="meter-fill"></div></div>
+        </div>
+        <div class="meter" data-meter="memory">
+          <div class="meter-head"><span class="label">Memory</span><span class="meter-value">--</span></div>
+          <div class="meter-track"><div class="meter-fill"></div></div>
+        </div>
+        <div class="meter" data-meter="gpu">
+          <div class="meter-head"><span class="label">GPU memory</span><span class="meter-value">--</span></div>
+          <div class="meter-track"><div class="meter-fill"></div></div>
+        </div>
+        <div class="meter" data-meter="volume">
+          <div class="meter-head"><span class="label">Volume</span><span class="meter-value">--</span></div>
+          <div class="meter-track"><div class="meter-fill"></div></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><span class="label">Modules</span></div>
+        <ul class="modules">
+          <li class="module" data-module="microphone" data-level="idle"><span class="dot"></span><span class="module-name">Microphone</span><span class="module-status">--</span></li>
+          <li class="module" data-module="stt" data-level="idle"><span class="dot"></span><span class="module-name">Speech-to-text</span><span class="module-status">--</span></li>
+          <li class="module" data-module="brain" data-level="idle"><span class="dot"></span><span class="module-name">Brain</span><span class="module-status">--</span></li>
+          <li class="module" data-module="voice" data-level="idle"><span class="dot"></span><span class="module-name">Voice</span><span class="module-status">--</span></li>
+          <li class="module" data-module="youtube" data-level="idle"><span class="dot"></span><span class="module-name">YouTube lookup</span><span class="module-status">--</span></li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><span class="label">Wake word</span></div>
+        <div class="wake-phrase" id="wake-phrase">Hey Jarvis</div>
+        <div class="wake-threshold"><span class="label">Threshold</span><span class="meter-value" id="wake-threshold">--</span></div>
+      </section>
+    </aside>
+
+    <section class="col-center panel stage" id="stage" data-state="idle">
+      <span class="bracket tl"></span><span class="bracket tr"></span>
+      <span class="bracket bl"></span><span class="bracket br"></span>
+      <span class="label core-label">Core // Voice interface</span>
+      <span class="label core-clock" id="clock">--:--:--</span>
+
+      <div class="orb" id="orb" data-state="idle" aria-hidden="true">
+        <svg class="dial" id="dial" viewBox="0 0 380 380"></svg>
+        <span class="ring"></span>
+        <span class="arc"></span>
+        <span class="dashed"></span>
+        <span class="pulse"></span>
+        <span class="core"></span>
+      </div>
+
+      <div class="status mono"><span class="status-dot"></span><span id="status-label">STANDBY</span></div>
+      <div class="headline" id="phrase">Say “Hey Jarvis”</div>
+      <div class="levels" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </section>
+
+    <aside class="col-right panel log">
+      <div class="panel-title"><span class="label">Log</span><span class="label" id="log-count">TODAY</span></div>
+      <div class="log-list" id="log">
+        <div class="log-empty" id="log-empty">Nothing yet today.</div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="bottombar">
+    <button class="icon-button mute" data-action="mute" title="Mute the microphone" aria-label="Mute">
+      <svg class="mic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+      <svg class="mic-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 9V6a3 3 0 0 1 6 0v5M15 14a3 3 0 0 1-6-1M5 11a7 7 0 0 0 11.5 5.4M19 11a7 7 0 0 1-.6 2.8M12 18v3M4 4l16 16"/></svg>
+    </button>
+    <div class="command">
+      <input id="command" type="text" autocomplete="off" spellcheck="false" maxlength="300"
+             placeholder="Type a command, or say ‘Hey Jarvis’">
+      <button class="hold" id="hold" title="Hold to record, release to send">HOLD TO TALK</button>
+    </div>
+    <div class="quick">
+      <button data-command="open vs code">Open VS Code</button>
+      <button data-command="take a screenshot">Screenshot</button>
+      <button data-command="lock the screen">Lock PC</button>
+    </div>
+    <button class="icon-button" data-action="settings" title="Settings" aria-label="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+  </footer>
+</div>
+
+<div class="error-banner panel" id="error" role="alert" hidden>
+  <span class="label error-title">Error</span>
+  <span class="error-text" id="error-text"></span>
+</div>
+
+<div class="confirm panel" id="confirm" hidden>
+  <div class="confirm-text">
+    <div class="confirm-question" id="confirm-question"></div>
+    <div class="label confirm-hint">Say or type yes / no</div>
+  </div>
+  <button class="yes" data-answer="yes">YES</button>
+  <button class="no" data-answer="no">NO</button>
+</div>
+
+<div class="settings" id="settings" hidden>
+  <div class="panel">
+    <div class="panel-title"><span class="label">Settings</span><span class="label">config.py</span></div>
+    <label class="toggle-row" id="startup-row">
+      <span class="toggle-text">
+        <span class="toggle-title">Start with Windows</span>
+        <span class="label toggle-note" id="startup-note">Opens as the mini pill at login</span>
+      </span>
+      <input type="checkbox" class="toggle" id="startup-toggle">
+    </label>
+    <dl id="settings-list"></dl>
+    <button class="settings-close" data-action="settings-close">CLOSE</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

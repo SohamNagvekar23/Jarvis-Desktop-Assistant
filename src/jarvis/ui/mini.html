@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" class="mini">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; font-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'none'">
+  <title>Jarvis mini</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="mini">
+  <div class="pill" id="pill" data-state="idle">
+    <button class="mini-orb" id="mini-orb" data-state="idle" data-action="restore" title="Open Jarvis" aria-label="Open the full window">
+      <span class="ring"></span><span class="arc"></span><span class="core"></span>
+    </button>
+    <div class="pill-middle pywebview-drag-region">
+      <div class="pill-status mono" id="status-label">STANDBY</div>
+      <div class="pill-phrase" id="phrase">Say “Hey Jarvis”</div>
+    </div>
+    <button class="icon-button mute" data-action="mute" title="Mute the microphone" aria-label="Mute">
+      <svg class="mic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+      <svg class="mic-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 9V6a3 3 0 0 1 6 0v5M15 14a3 3 0 0 1-6-1M5 11a7 7 0 0 0 11.5 5.4M19 11a7 7 0 0 1-.6 2.8M12 18v3M4 4l16 16"/></svg>
+    </button>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
